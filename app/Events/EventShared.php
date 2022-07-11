@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Events;
+
+use Illuminate\Broadcasting\Channel;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+
+class EventShared
+{
+    use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    public $eventid;
+    public $platform;
+
+    public function __construct($array)
+    {
+        $this->eventid = $array['eventid'];
+        $this->platform = $array['platform'];
+    }
+}

@@ -1,0 +1,36 @@
+<?php
+use Illuminate\Support\Facades\Auth;
+
+/*
+|--------------------------------------------------------------------------
+| Broadcast Channels
+|--------------------------------------------------------------------------
+|
+| Here you may register all of the event broadcasting channels that your
+| application supports. The given channel authorization callbacks are
+| used to check if an authenticated user can listen to the channel.
+|
+*/
+
+//Broadcast::channel('App.User.{id}', function ($user, $id) {
+//    return (int) $user->id === (int) $id;
+//});
+
+Broadcast::channel('event.{id}', function ($user, $id) {
+    //$authorizedUser = App\Event::find($id)->participants()->where('account_id', $user->id)->firstOrFail()->id;
+
+    //if($user->id == $authorizedUser) {
+    //            return true;
+    //        }
+    if(Auth::User()->accountRole == "Admin"){
+        return true;
+    }
+    else if(Auth::User()->id == App\Event::where("id", "=", $id)->first()->owner_id){
+        return true;
+    }
+    else if(empty(App\Event::find($id)->participants()->where('account_id', $user->id)->firstOrFail()->id)) {
+        return false;
+    }
+
+    return true;
+});
